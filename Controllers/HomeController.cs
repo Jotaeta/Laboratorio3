@@ -45,6 +45,7 @@ namespace Laboratorio3.Controllers
 
             return RedirectToAction("Index");
         }
+
         public ActionResult CesarDescodificacion()
         {
             var Clave = "ABC";
@@ -77,6 +78,23 @@ namespace Laboratorio3.Controllers
         }
         #endregion
 
+        #region ZIGZAG
+        public ActionResult ZigZagCifrado()
+        {
+            var Clave = 3; // Colocar un TextBox para conseguir la clave en la vista
+            if (Clave > 1)
+            {
+                var txt = "HOLAHOLA";
+                //Agregar el reader
+                // usar como txto a agregar el documento
+
+               // var Matriz = ClaseLogica.CifradoZigZag(Clave, txt);
+                //var des = ClaseLogica.DescifradoZigZag(Clave, Matriz);
+
+            }
+            return RedirectToAction("Index");
+        }
+        #endregion
 
     }
 }
