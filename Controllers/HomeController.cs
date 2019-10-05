@@ -348,5 +348,87 @@ namespace Laboratorio3.Controllers
             return RedirectToAction("Descargar");
         }
         #endregion
+        #region ZIGZAG
+        public ActionResult ZigZagCifrado()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ZigZagCifrado(HttpPostedFileBase file, string clave)
+        {
+            var Clave = Convert.ToInt32(clave);
+            if (Clave > 1)
+            {
+                var Texto = string.Empty;
+                var byteBuffer = new byte[1000000];
+                using (var streamReader = new FileStream(file.FileName, FileMode.Open))
+                {
+                    using (var reader = new BinaryReader(streamReader))
+                    {
+                        while (reader.BaseStream.Position != reader.BaseStream.Length)
+                        {
+                            Texto += Encoding.UTF8.GetString(reader.ReadBytes(1000000));
+                        }
+                    }
+                }
+
+                var txt = ClaseLogica.CifradoZigZag(Clave, Texto);
+
+                DataInstance.Instance.ArchivoAcutal = $"{DataInstance.Instance.sPath}\\{Path.GetFileNameWithoutExtension(file.FileName)}.cif";
+
+
+                using (var streamWriter = new FileStream(DataInstance.Instance.ArchivoAcutal, FileMode.OpenOrCreate))
+                {
+                    using (var writer = new BinaryWriter(streamWriter))
+                    {
+                        writer.Write(Encoding.UTF8.GetBytes(txt.ToArray()));
+                    }
+                }
+
+
+            }
+            return RedirectToAction("Descargar");
+        }
+
+        public ActionResult ZigZagDesCifrado()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ZigZagDescifrado(HttpPostedFileBase file, string clave)
+        {
+            var Clave = Convert.ToInt32(clave);
+            if (Clave > 1)
+            {
+                var Texto = string.Empty;
+                var byteBuffer = new byte[1000000];
+                using (var streamReader = new FileStream(file.FileName, FileMode.Open))
+                {
+                    using (var reader = new BinaryReader(streamReader))
+                    {
+                        while (reader.BaseStream.Position != reader.BaseStream.Length)
+                        {
+                            Texto += Encoding.UTF8.GetString(reader.ReadBytes(1000000));
+                        }
+                    }
+                }
+
+                var txt = ClaseLogica.DescifradoZigZag(Clave, Texto);
+
+                DataInstance.Instance.ArchivoAcutal = $"{DataInstance.Instance.sPath}\\{Path.GetFileNameWithoutExtension(file.FileName)}.txt";
+
+                using (var streamWriter = new FileStream(DataInstance.Instance.ArchivoAcutal, FileMode.OpenOrCreate))
+                {
+                    using (var writer = new BinaryWriter(streamWriter))
+                    {
+                        writer.Write(Encoding.UTF8.GetBytes(txt.ToArray()));
+                    }
+                }
+            }
+            return RedirectToAction("Descargar");
+        }
+        #endregion
     }
 }
