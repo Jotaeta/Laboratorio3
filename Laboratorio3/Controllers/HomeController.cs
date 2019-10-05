@@ -29,6 +29,13 @@ namespace Laboratorio3.Controllers
         [HttpPost]
         public ActionResult CesarCodificacion(HttpPostedFileBase file, string Clave)
         {
+            bool Exists;
+            string Paths = Server.MapPath("~/Archivos/");
+            Exists = Directory.Exists(Paths);
+            if (!Exists)
+            {
+                Directory.CreateDirectory(Paths);
+            }
             var txt = string.Empty;
 
             var ErrorPalabra = false;
@@ -84,6 +91,13 @@ namespace Laboratorio3.Controllers
         [HttpPost]
         public ActionResult CesarDescodificacion(HttpPostedFileBase file, string Clave)
         {
+            bool Exists;
+            string Paths = Server.MapPath("~/Archivos/");
+            Exists = Directory.Exists(Paths);
+            if (!Exists)
+            {
+                Directory.CreateDirectory(Paths);
+            }
             var Texto = string.Empty;
             var txt = string.Empty;
 
@@ -139,6 +153,13 @@ namespace Laboratorio3.Controllers
         [HttpPost]
         public ActionResult EspiralDescifrado(HttpPostedFileBase file, string clave)
         {
+            bool Exists;
+            string Paths = Server.MapPath("~/Archivos/");
+            Exists = Directory.Exists(Paths);
+            if (!Exists)
+            {
+                Directory.CreateDirectory(Paths);
+            }
             var ClaveM = Convert.ToInt32(clave);
 
             var Texto = string.Empty;
@@ -244,6 +265,13 @@ namespace Laboratorio3.Controllers
         [HttpPost]
         public ActionResult EspiralCifrado(HttpPostedFileBase file, string clave)
         {
+            bool Exists;
+            string Paths = Server.MapPath("~/Archivos/");
+            Exists = Directory.Exists(Paths);
+            if (!Exists)
+            {
+                Directory.CreateDirectory(Paths);
+            }
             var ClaveM = Convert.ToInt32(clave);
 
             var Texto = string.Empty;
@@ -357,6 +385,13 @@ namespace Laboratorio3.Controllers
         [HttpPost]
         public ActionResult ZigZagCifrado(HttpPostedFileBase file, string clave)
         {
+            bool Exists;
+            string Paths = Server.MapPath("~/Archivos/");
+            Exists = Directory.Exists(Paths);
+            if (!Exists)
+            {
+                Directory.CreateDirectory(Paths);
+            }
             var Clave = Convert.ToInt32(clave);
             if (Clave > 1)
             {
@@ -399,6 +434,13 @@ namespace Laboratorio3.Controllers
         [HttpPost]
         public ActionResult ZigZagDescifrado(HttpPostedFileBase file, string clave)
         {
+            bool Exists;
+            string Paths = Server.MapPath("~/Archivos/");
+            Exists = Directory.Exists(Paths);
+            if (!Exists)
+            {
+                Directory.CreateDirectory(Paths);
+            }
             var Clave = Convert.ToInt32(clave);
             if (Clave > 1)
             {
