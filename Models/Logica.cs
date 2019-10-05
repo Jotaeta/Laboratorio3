@@ -52,7 +52,7 @@ namespace Laboratorio3.Models
             return AuxABC;
         }
         #endregion
-        #region ZIGZAG
+       #region ZIGZAG
         public string DescifradoZigZag(int clave, string Texto)
         {
             var MatrizAux = new char[Texto.Length, clave];
