@@ -7,18 +7,18 @@ namespace Laboratorio3.Models
 {
     public class Logica
     {
-        #region CESAR
+       #region CESAR
         public Dictionary<int, int> ObtnerDiccionaro(int Tipo, string clave)
         {
             var AuxABC = new Dictionary<int, int>();
 
-            var tamVector = 224;
+            var tamVector = 256;
             var ABCOriginal = new List<int>();
             var ABCClave = new List<int>();
 
             for (int i = 0; i < tamVector; i++)
             {
-                ABCOriginal.Add(i + 32);
+                ABCOriginal.Add(i);
             }
 
             foreach (var item in clave)
@@ -33,10 +33,28 @@ namespace Laboratorio3.Models
                     ABCClave.Add(ABCOriginal[i]);
                 }
             }
+
+            if (Tipo == 1)
+            {
+                for (int i = 0; i < tamVector; i++)
+                {
+                    AuxABC.Add(ABCOriginal[i], ABCClave[i]);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < tamVector; i++)
+                {
+                    AuxABC.Add(ABCClave[i], ABCOriginal[i]);
+                }
+            }
+
             return AuxABC;
         }
         #endregion
-
     }
 
 }
+
+
+

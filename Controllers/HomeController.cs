@@ -4,21 +4,29 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Laboratorio3.Models;
+using Laboratorio3.Helpers;
 namespace Laboratorio3.Controllers
+
 {
     public class HomeController : Controller
     {
         Logica ClaseLogica = new Logica();
+
         public ActionResult Index()
+        {
+            DataInstance.Instance.sPath = Server.MapPath($"~/Archivos");
+
+            return View();
+        }
+        #region CESAR
+        public ActionResult CesarCodificacion()
         {
             return View();
         }
 
-        #region CESAR
-        public ActionResult CesarCodificacion()
+        [HttpPost]
+        public ActionResult CesarCodificacion(HttpPostedFileBase file, string Clave)
         {
-            var Clave = "ABC";
-            var Texto = " !\"";
             var txt = string.Empty;
 
             var ErrorPalabra = false;
@@ -35,21 +43,46 @@ namespace Laboratorio3.Controllers
 
             if (!ErrorPalabra)
             {
-                //AGREGAR EL READER
+                var Texto = string.Empty;
                 var ABC = ClaseLogica.ObtnerDiccionaro(1, Clave);
-                foreach (var item in Texto)
+
+                var byteBuffer = new byte[1000000];
+                using (var streamReader = new FileStream(file.FileName, FileMode.Open))
                 {
-                    txt += ABC[item]; //AGREGAR WRITER
+                    using (var reader = new BinaryReader(streamReader))
+                    {
+                        DataInstance.Instance.ArchivoAcutal = $"{DataInstance.Instance.sPath}\\{Path.GetFileNameWithoutExtension(file.FileName)}.cif";
+
+                        using (var streamWriter = new FileStream(DataInstance.Instance.ArchivoAcutal, FileMode.OpenOrCreate))
+                        {
+                            using (var writer = new BinaryWriter(streamWriter))
+                            {
+                                while (reader.BaseStream.Position != reader.BaseStream.Length)
+                                {
+                                    byteBuffer = reader.ReadBytes(1000000);
+
+                                    foreach (var item in byteBuffer)
+                                    {
+                                        writer.Write(Convert.ToByte(ABC[Convert.ToInt32(item)]));
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
-
-            return RedirectToAction("Index");
+            return RedirectToAction("Descargar");
         }
 
         public ActionResult CesarDescodificacion()
         {
-            var Clave = "ABC";
-            var Texto = "ABC";
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CesarDescodificacion(HttpPostedFileBase file, string Clave)
+        {
+            var Texto = string.Empty;
             var txt = string.Empty;
 
             var ErrorPalabra = false;
@@ -66,35 +99,34 @@ namespace Laboratorio3.Controllers
 
             if (!ErrorPalabra)
             {
-                // AGREGAR EL READER
-
                 var ABC = ClaseLogica.ObtnerDiccionaro(2, Clave);
-                foreach (var item in Texto)
+                var byteBuffer = new byte[1000000];
+                using (var streamReader = new FileStream(file.FileName, FileMode.Open))
                 {
-                    txt += ABC[item]; //PASAR AL WRITER
+                    using (var reader = new BinaryReader(streamReader))
+                    {
+                        DataInstance.Instance.ArchivoAcutal = $"{DataInstance.Instance.sPath}\\{Path.GetFileNameWithoutExtension(file.FileName)}.txt";
+
+                        using (var streamWriter = new FileStream(DataInstance.Instance.ArchivoAcutal, FileMode.OpenOrCreate))
+                        {
+                            using (var writer = new BinaryWriter(streamWriter))
+                            {
+                                while (reader.BaseStream.Position != reader.BaseStream.Length)
+                                {
+                                    byteBuffer = reader.ReadBytes(1000000);
+
+                                    foreach (var item in byteBuffer)
+                                    {
+                                        writer.Write(Convert.ToByte(ABC[Convert.ToInt32(item)]));
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Descargar");
         }
         #endregion
-
-        #region ZIGZAG
-        public ActionResult ZigZagCifrado()
-        {
-            var Clave = 3; // Colocar un TextBox para conseguir la clave en la vista
-            if (Clave > 1)
-            {
-                var txt = "HOLAHOLA";
-                //Agregar el reader
-                // usar como txto a agregar el documento
-
-               // var Matriz = ClaseLogica.CifradoZigZag(Clave, txt);
-                //var des = ClaseLogica.DescifradoZigZag(Clave, Matriz);
-
-            }
-            return RedirectToAction("Index");
-        }
-        #endregion
-
     }
 }
