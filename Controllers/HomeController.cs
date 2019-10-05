@@ -430,5 +430,27 @@ namespace Laboratorio3.Controllers
             return RedirectToAction("Descargar");
         }
         #endregion
+        #region DESCARGAR
+        public ActionResult Descargar()
+        {
+            var name = Path.GetFileName(DataInstance.Instance.ArchivoAcutal);
+            return File(DataInstance.Instance.ArchivoAcutal, System.Net.Mime.MediaTypeNames.Application.Octet, name);
+        }
+        #endregion
+        #region OTRAS FUNCIONES
+        public ActionResult About()
+        {
+            ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+        #endregion
     }
 }
